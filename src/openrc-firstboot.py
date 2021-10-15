@@ -13,6 +13,7 @@ openrc-firstboot: A very, very, *very* simple firstboot in Python.
 from crypt import crypt
 from getpass import getpass
 from os import system
+from subprocess import call
 from random import choice
 from time import sleep
 
@@ -29,7 +30,7 @@ def set_password(user, newpasswd):
     salt = "".join(choice(SALT_DICT) for i in range(8))
     mask = crypt(newpasswd, "$1$"+salt+"$")
 
-    ret = system(f"usermod -p {mask} {user}")
+    ret = call(("usermod","-p",mask,user))
     if ret != 0:
         print(f"Error setting password for {user}.")
     else:
