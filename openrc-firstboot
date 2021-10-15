@@ -12,8 +12,8 @@ openrc-firstboot: A very, very, *very* simple firstboot in Python.
 
 from crypt import crypt
 from getpass import getpass
+from os import system
 from random import choice
-from subprocess import call
 from time import sleep
 
 
@@ -29,11 +29,11 @@ def set_password(user, newpasswd):
     salt = "".join(choice(SALT_DICT) for i in range(8))
     mask = crypt(newpasswd, "$1$"+salt+"$")
 
-    ret = call(("usermod", "-p", mask, user))
+    ret = system(f"usermod -p {mask} {user}")
     if ret != 0:
         print(f"Error setting password for {user}.")
     else:
-        print(f"Password for {user} changed successfully.")
+        print(f"Password for {user} changed successfully.\n")
 
 
 def set_hostname(newname):
@@ -47,23 +47,21 @@ def set_hostname(newname):
     except:
         print("Unable to set the hostname for the machine.")
     else:
-        print(f"This machine will now be known as {newname} on the network.")
+        print(f"This machine will now be known as {newname} on the network.\n")
 
 
-def create_local_user(username):
+def create_local_user(new_user):
     """
     Creates a local user and adds them to the audio and video groups.
     """
-    ret = call(("useradd",
-                "-m -G audio,video,wheel",
-                username,
-                "-s /bin/bash"))
+    #ret = call(("useradd","-m -G audio,video,wheel -s /bin/bash",new_user))
+    ret = system(f"useradd -m -G audio,video,wheel -s /bin/bash {new_user}")
     if ret != 0:
-        print(f"Unable to create user {username}.")
+        print(f"Unable to create user {new_user}.")
     else:
-        print((f"New user {username} created successfully and ",
-               "added to the 'audio', 'video' and 'wheel' groups. ",
-               "Your default shell is bash."))
+        print(f"New user {new_user} created successfully and",
+               "added to the 'audio', 'video' and 'wheel' groups.\n",
+               "Your default shell is bash.")
 
 def cleanup():
     """
@@ -78,8 +76,8 @@ def main():
     print("FIRST BOOT SYSTEM SETUP")
     print("#######################")
 
-    print("This appears to be your first time booting this system. This ",
-          "script will guide you through: ")
+    print("This appears to be your first time booting this system. This",
+          "script will guide you through:")
     print("1. Changing the default root password.")
     print("2. Setting a hostname for the machine.")
     print("3. Creating a local user.\n\n\n\n")
@@ -114,7 +112,7 @@ def main():
     uname = input("Please enter a username: ")
     create_local_user(uname)
     while True:
-        upass   = getpass(f"Please input a password for {uname}.")
+        upass   = getpass(f"Please input a password for {uname}: ")
         conf    = getpass("Confirm password: ")
         if upass != conf:
             print("Error: passwords do not match. Try again.")
