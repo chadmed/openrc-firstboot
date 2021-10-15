@@ -52,7 +52,7 @@ def set_hostname(newname):
 
 def create_local_user(username):
     """
-    Creates a local user and adds them to the audio and video groups.
+    Creates a local user and adds them to the audio, video and wheel groups.
     """
     ret = call(("usermod",
                 "-a -G audio,video,wheel",
@@ -112,7 +112,7 @@ def main():
     print("#####################\n\n")
     print("You will now create a user account for yourself.\n")
     uname = input("Please enter a username: ")
-        while True:
+    while True:
         upass   = getpass(f"Please input a password for {name}.")
         conf    = getpass("Confirm password: ")
         if upass != conf:

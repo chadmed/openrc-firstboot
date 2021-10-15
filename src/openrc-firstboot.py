@@ -112,7 +112,7 @@ def main():
     print("#####################\n\n")
     print("You will now create a user account for yourself.\n")
     uname = input("Please enter a username: ")
-        while True:
+    while True:
         upass   = getpass(f"Please input a password for {name}.")
         conf    = getpass("Confirm password: ")
         if upass != conf:
