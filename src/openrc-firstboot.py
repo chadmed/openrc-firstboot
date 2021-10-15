@@ -26,7 +26,7 @@ def set_password(user, newpasswd):
                  "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
                  "abcdefghijklmnopqrstuvwxyz")
 
-    salt = "".join(choice(ALPHABET) for i in range(8))
+    salt = "".join(choice(SALT_DICT) for i in range(8))
     mask = crypt(newpasswd, "$1$"+salt+"$")
 
     ret = call(("usermod", "-p", mask, user))
@@ -89,7 +89,7 @@ def main():
     print("Changing the default root password")
     print("##################################\n\n")
     while True:
-        newroot = getpass("Please input a new root password.")
+        newroot = getpass("Please input a new root password: ")
         conf    = getpass("Confirm root password: ")
         if newroot != conf:
             print("Error: passwords do not match. Try again.")
