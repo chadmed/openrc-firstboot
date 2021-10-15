@@ -54,8 +54,8 @@ def create_local_user(username):
     """
     Creates a local user and adds them to the audio and video groups.
     """
-    ret = call(("usermod",
-                "-a -G audio,video,wheel",
+    ret = call(("useradd",
+                "-m -G audio,video,wheel",
                 username,
                 "-s /bin/bash"))
     if ret != 0:
