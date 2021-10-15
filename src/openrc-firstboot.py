@@ -104,23 +104,24 @@ def main():
     print("##################################\n\n")
     print("The hostname identifies your machine on the network. Must contain ",
           "alphanumeric characters only. Do not append '.local'.\n")
-    name = input("Please specify a hostname: ")
-    set_hostname(name)
+    hostname = input("Please specify a hostname: ")
+    set_hostname(hostname)
 
     print("#####################")
     print("Creating a local user")
     print("#####################\n\n")
     print("You will now create a user account for yourself.\n")
     uname = input("Please enter a username: ")
+    create_local_user(uname)
     while True:
-        upass   = getpass(f"Please input a password for {name}.")
+        upass   = getpass(f"Please input a password for {uname}.")
         conf    = getpass("Confirm password: ")
         if upass != conf:
             print("Error: passwords do not match. Try again.")
             sleep(2)
             continue
         else:
-            set_password(name, upass)
+            set_password(uname, upass)
             break
 
     print("Your machine will now reboot, probably to a login shell. Consult ",
